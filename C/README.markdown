@@ -20,7 +20,7 @@ liblib.call_C( library, "function", arguments ... )
 You can also read/write variables of this library with:
 
 `
-liblib.write_var_C( library, "variable", value )
+liblib.write_var_C( library, "variable", value )  
 x = liblib.read_var_C( library, "variable" )
 `
 
