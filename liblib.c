@@ -23,10 +23,11 @@ void liblib_error( const char *format, ... ) {
 
 int liblib_register_library( Library lib ) {
 
-    lib_table = realloc( lib_table, sizeof( Library ) * lib_table_size+1 );
-    lib_table[lib_table_size] = lib;
+    lib_table_size++;
+    lib_table = realloc( lib_table, sizeof( Library ) * lib_table_size );
+    lib_table[lib_table_size-1] = lib;
 
-    return lib_table_size++;
+    return lib_table_size-1;
 
 }
 

@@ -21,11 +21,14 @@ int load_library_C( char *path ) {
     void *handle;
     Library lib;
 
-    printf("Loading library: %s\n", path);
+#ifdef DEBUG_LIBLIB
+    printf("Loading dynamic library: %s\n", path);
+#endif
 
     handle = dlopen( path, RTLD_LAZY );
     if (!handle) {
         liblib_error("couldn't load C library: %s", path);
+        return 0;
     }
 
       /* Begin packing our result library struct */

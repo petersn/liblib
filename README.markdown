@@ -22,14 +22,11 @@ Languages with liblib interfaces:
 
 * C
 * Python
+* Mathematica
 
 Languages with liblib outerfaces:
 
-* C
-
-Note that currently this just makes for a rather pointless interface to use
-a C library to call C from Python. Or worse, call C using a C library from C.
-Just you wait, it'll get awesome.
+* C (extremely primitive, only int (*)(int) functions handled properly)
 
 Languages on the support wishlist:
 
