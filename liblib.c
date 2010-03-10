@@ -22,6 +22,12 @@ void liblib_error( const char *format, ... ) {
 }
 
 int liblib_register_library( Library lib ) {
+
+    lib_table = realloc( lib_table, sizeof( Library ) * lib_table_size+1 );
+    lib_table[lib_table_size] = lib;
+
+    return lib_table_size++;
+
 }
 
 extern int init_liblib() {
@@ -36,11 +42,31 @@ extern int init_liblib() {
 
 }
 
-/*
-extern int call_liblib_loader( Library (*loader)( char *resource ), char *resource ) {
-    Library lib;
+extern int call_lib_function( int library_index, const char *function, int arg ) {
+
+    if (library_index < 0) {
+        liblib_error("library index %i less than zero", library_index);
+        return -1;
+    } else if (library_index >= lib_table_size) {
+        liblib_error("library index %i greater than max, %i", library_index, lib_table_size);
+        return -1;
+    }
+
+    /*
+    va_list argp;
+    va_start( argp, argc );
+    */
+
+#ifdef DEBUG_LIBLIB
+    printf("Language:           %i\n", lib_table[library_index].lang);
+    printf("Function pointer:   %p\n", lib_table[library_index].fp);
+    printf("Function pointer(): %p\n", lib_table[library_index].fp( &lib_table[library_index], function ));
+    fflush( stdout );
+#endif
+
+    return lib_table[library_index].fp( &lib_table[library_index], function )( arg );
+
 }
-*/
 
  // Each langauge has its own C code section
  // You can therefore remove language support trivially

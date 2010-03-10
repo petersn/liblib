@@ -25,3 +25,13 @@ class interface:
     def __getattr__(self, name):
         return getattr( liblib_dll, name )
 
+class Library:
+    def __init__(self, language, resource):
+        self.callable = getattr(liblib_dll, "load_library_%s" % language)
+        self.lib_id   = self.callable( resource )
+
+    def __call__(self, function, argument):
+        assert type(argument) == int
+        i = liblib_dll.call_lib_function( self.lib_id, function, argument )
+        return i
+

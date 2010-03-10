@@ -6,6 +6,6 @@ OPTIONS=-DDEBUG_LIBLIB
 LIBRARIES=-ldl
 
 liblib: liblib.c liblib.h Makefile
-	gcc -O3 -fPIC $(OPTIONS) $(LIBRARIES) -c liblib.c
+	gcc -g -fPIC $(OPTIONS) $(LIBRARIES) -c liblib.c
 	ld -shared -soname liblib.so.$(MAJOR_VERSION) -o liblib.so.$(MAJOR_VERSION).$(MINOR_VERSION) -lc liblib.o
 

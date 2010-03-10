@@ -2,5 +2,5 @@
 
 #include <dlfcn.h>
 
-extern Library load_library_C( char *path );
+extern int load_library_C( char *path );
 

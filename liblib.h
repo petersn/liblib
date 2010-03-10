@@ -18,7 +18,7 @@ typedef enum {
 
 } Language;
 
-typedef struct {
+typedef struct _library {
 
     Language lang;
 
@@ -27,7 +27,7 @@ typedef struct {
      *   A function pointer that takes a string, and returns the corresponding function.
      *   Functions returned by the lookup function take a void *, and return a void *.
      */
-    void *(*( (*fp)( const char *symbol ) ))(void *);
+    int (*( (*fp)( struct _library *lib, const char *symbol ) ))(int arg);
     void *data;
 
 } Library;
@@ -35,17 +35,13 @@ typedef struct {
 void liblib_error( const char *format, ... );
 int  liblib_register_library( Library lib );
 
+  /* Interface functions */
 extern int init_liblib() __attribute__((constructor));
+extern int call_lib_function( int library_index, const char *function, int arg );
 
   /* Global library table */
 int lib_table_size;
 Library *lib_table;
-
-  /*
-   * Main interface function -- call this on a loader to load a library
-   *   Return value will be an index into the library table
-   */
-//extern int call_liblib_loader( Library (*loader)( char *resource ), char *resource );
 
   // Language specific headers
 #include "C/all.h"

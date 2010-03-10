@@ -8,14 +8,22 @@ The primary functions:
 * To allow arbitrary functions to call each other between languages.
 * To define abstract data types that are common to many languages.
 
+### Terminology
+
+An **interface** to liblib from language X is code to import/include/link liblib from within X.
+
+An **outerface** to language X from liblib is support in liblib to call functions in X.
+
+A language is fully supported when it has an interface and an outerface.
+
 ----------------
 
-Languages that can currently import liblib:
+Languages with liblib interfaces:
 
 * C
 * Python
 
-Languages that you can currently call using liblib:
+Languages with liblib outerfaces:
 
 * C
 
