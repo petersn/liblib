@@ -1,23 +1,25 @@
-# This makefile can be used to build all or some of the sample
-# programs.  To build all of them, use the command
-# 'make all'.  To build one, say addtwo, use the command
-# 'make addtwo'.
+# Makefile to make a MathLink liblib extension for Mathematica
+# Once you have built it, you may include it with: Install["liblib"]
+# Then you can use liblib as you know and love it from Mathematica!
 
 VERSION=7.0
-#MLINKDIR = /usr/local/Wolfram/Mathematica/${VERSION}/SystemFiles/Links/MathLink/DeveloperKit
-MLINKDIR = /home/peter/.cells/mathematica/mathematica/SystemFiles/Links/MathLink/DeveloperKit
-SYS = Linux-x86-64
+MLINKDIR = /usr/local/Wolfram/Mathematica/${VERSION}/SystemFiles/Links/MathLink/DeveloperKit
+
+SYS  = Linux-x86-64
+BITS = 64
+  # Alternative, for 32-bit users:
+#SYS  = Linux
+#BITS = 32
 
 EXTRA_CFLAGS=-ldl
 
-INCDIR = ${CADDSDIR}
-LIBDIR = ${CADDSDIR}
+INCDIR = $(MLINKDIR)/$(SYS)/CompilerAdditions
+LIBDIR = $(MLINKDIR)/$(SYS)/CompilerAdditions
 
-#MPREP = ${CADDSDIR}/mprep
-MPREP = /home/peter/.cells/mathematica/mathematica/SystemFiles/Links/MathLink/DeveloperKit/Linux-x86-64/CompilerAdditions/mprep
-RM = rm
+MPREP  = $(MLINKDIR)/$(SYS)/CompilerAdditions/mprep
+RM     = rm
 
-CC = /usr/bin/gcc
+CC  = /usr/bin/gcc
 CXX = /usr/bin/c++
 
 BINARIES = liblib
@@ -25,14 +27,14 @@ BINARIES = liblib
 all : $(BINARIES)
 
 liblib : liblibtm.o liblib.o
-	${CXX} ${EXTRA_CFLAGS} liblibtm.o liblib.o -L/home/peter/.cells/mathematica/mathematica/SystemFiles/Links/MathLink/DeveloperKit/Linux-x86-64/CompilerAdditions -lML64i3 -lm -lpthread -lrt -lstdc++ -o $@
-#-I${INCDIR} addtwotm.o addtwo.o -L${LIBDIR} -lML64i3 -lm -lpthread -lrt -lstdc++ -o $@
+	${CXX} ${EXTRA_CFLAGS} liblibtm.o liblib.o -L$(LIBDIR) -lML$(BITS)i3 -lm -lpthread -lrt -lstdc++ -o $@
 
 .c.o :
-	${CC} -l/home/peter/.cells/mathematica/mathematica/SystemFiles/Links/MathLink/DeveloperKit/Linux-x86-64/CompilerAdditions/libML64i3.so -I/home/peter/.cells/mathematica/mathematica/SystemFiles/Links/MathLink/DeveloperKit/Linux-x86-64/CompilerAdditions -c ${EXTRA_CFLAGS} $< #-I${INCDIR} $<
+	${CC} -l$(LIBDIR)/libML$(BITS)i3.so -I$(INCDIR) -c ${EXTRA_CFLAGS} $<
 
 liblibtm.c : liblib.tm
 	${MPREP} $? -o $@
 
 clean :
 	@ ${RM} -rf *.o *tm.c $(BINARIES)
+
